@@ -1,56 +1,46 @@
-
-# Platzi + Shadcn Admin
-
+# Mohammadreza Nozari + Shadcn Admin
 
 ## Screenshots
 
 ![App Screenshot](https://raw.githubusercontent.com/aungpaingsoe097238/platzi-shadcn-admin/main/public/app/dashboard-light.png)
 ![App Screenshot](https://raw.githubusercontent.com/aungpaingsoe097238/platzi-shadcn-admin/main/public/app/dashboard-dark.png)
 
-
-## Demo Link
-
-https://admin-eight-eta-96.vercel.app
-https://platzi-shadcn-admin.netlify.app
-
 ## Features
 
 - Sign In
-- Dashboard 
+- Dashboard
 - DataTables
 - Error Pages
 - Light & Dark Mode
 - Error Handling
 - Network Connection Check
 - Responsive Design
-
-
+- Transaction page
+- Websocket
+- Redux state managment
 
 ## Tech Stack
 
-**Client:** TypeScript, React, React Redux, RTK Query, ShadcnUI, Formik, Yup 
+**Client:** TypeScript, React, React Redux, RTK Query, ShadcnUI, Formik, Yup, web socket
 
-**API:** Platzi Api
-
-
+**API:** Api
 
 ## Deployment
 
 Package Installation
 
 ```bash
-  npm run install
+  yarn start
 ```
 
 Running with development server
 
 ```bash
-  npm run dev
+  yarn dev
 ```
 
 Building production
 
 ```bash
-  npm run build
+  yarn build
 ```
-
