@@ -1,5 +1,9 @@
 # Full-Stack Transaction Management Application
 
+## Screenshots
+
+![App Screenshot](https://raw.githubusercontent.com/Mohammadreza-Nozari/transactions/refs/heads/main/images/Capture.PNG)
+
 ## Features
 
 - Sign In
