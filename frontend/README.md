@@ -2,8 +2,7 @@
 
 ## Screenshots
 
-![App Screenshot](https://raw.githubusercontent.com/aungpaingsoe097238/platzi-shadcn-admin/main/public/app/dashboard-light.png)
-![App Screenshot](https://raw.githubusercontent.com/aungpaingsoe097238/platzi-shadcn-admin/main/public/app/dashboard-dark.png)
+![App Screenshot](https://raw.githubusercontent.com/Mohammadreza-Nozari/transactions/refs/heads/main/images/Capture.PNG)
 
 ## Features
 
