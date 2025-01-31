@@ -49,7 +49,7 @@ const Transactions = () => {
             </button>
           ))}
         </div>
-        <DataTable columns={columns} data={transactions} />;
+        <DataTable columns={columns} data={transactions} />
       </div>
     );
   }

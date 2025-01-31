@@ -1,4 +1,3 @@
-import { OnApplicationShutdown } from '@nestjs/common';
 import {
   MessageBody,
   OnGatewayConnection,
@@ -14,25 +13,27 @@ import { faker } from '@faker-js/faker';
 
 @WebSocketGateway({
   cors: {
-    origin: 'http://localhost:5173', // Change this to your frontend URL
-    credentials: true,
+    origin: 'http://localhost:5173', // Set the frontend URL allowed to connect to this WebSocket server
+    credentials: true, // Allow sending credentials (cookies, authorization headers)
   },
 })
 export class WebsocketsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  @WebSocketServer()
+  @WebSocketServer() // Injects the WebSocket server instance
   server: Server;
 
   constructor() {}
 
+  // Generates a random date between the given start and end dates, returning it in YYYY-MM-DD format
   getRandomDate(start = new Date(2000, 0, 1), end = new Date()) {
     const randomDate = new Date(
       start.getTime() + Math.random() * (end.getTime() - start.getTime()),
     );
-    return randomDate.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
+    return randomDate.toISOString().split('T')[0]; // Extracts YYYY-MM-DD from the ISO string
   }
 
+  // Initial set of transactions for testing
   private transactions: ITransaction[] = [
     {
       id: faker.string.uuid(),
@@ -52,45 +53,50 @@ export class WebsocketsGateway
     },
   ];
 
+  // Called once the WebSocket server is initialized
   afterInit(server: Server) {
     console.log('WebSocket Server Initialized');
-    this.simulateNewTransactions();
+    this.simulateNewTransactions(); // Start simulating new transactions every 30 seconds
   }
 
+  // Handles new WebSocket connection
   handleConnection(client: Socket) {
     console.log(`Client connected: ${client.id}`);
-    client.emit('initialTransactions', this.transactions); // Send existing transactions on connect
+    client.emit('initialTransactions', this.transactions); // Send existing transactions when a client connects
   }
 
+  // Handles WebSocket disconnection
   handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
   }
 
+  // Updates the status of a transaction and notifies all connected clients
   @SubscribeMessage('updateTransactionStatus')
   handleUpdateStatus(
-    @MessageBody() data: { id: string; status: 'Pending' | 'Approved' },
+    @MessageBody() data: { id: string; status: 'Pending' | 'Approved' }, // Data structure for updating transaction status
   ) {
-    const transaction = this.transactions.find((t) => t.id === data.id);
+    const transaction = this.transactions.find((t) => t.id === data.id); // Find the transaction by ID
     if (transaction) {
-      transaction.status = data.status;
-      this.server.emit('transactionUpdated', transaction); // Notify all clients
+      transaction.status = data.status; // Update the status of the found transaction
+      this.server.emit('transactionUpdated', transaction); // Notify all clients about the updated transaction
     }
   }
 
+  // Simulates new transactions every 30 seconds and sends them to all connected clients
   private simulateNewTransactions() {
-    let idCounter = this.transactions.length + 1;
+    let idCounter = this.transactions.length + 1; // Start the ID counter from the current length of transactions
     setInterval(() => {
       const newTransaction: ITransaction = {
-        id: faker.string.uuid(),
-        to: faker.person.fullName(),
-        amount: Math.floor(Math.random() * 500),
-        currency: ['USD', 'EUR', 'GBP'][Math.floor(Math.random() * 3)],
-        status: 'Pending',
-        date: this.getRandomDate(),
+        id: faker.string.uuid(), // Generate a random UUID for the transaction
+        to: faker.person.fullName(), // Generate a random full name for the recipient
+        amount: Math.floor(Math.random() * 500), // Random transaction amount between 0 and 500
+        currency: ['USD', 'EUR', 'GBP'][Math.floor(Math.random() * 3)], // Random currency from USD, EUR, GBP
+        status: 'Pending', // Initial status is "Pending"
+        date: this.getRandomDate(), // Generate a random date for the transaction
       };
 
-      this.transactions.unshift(newTransaction);
-      this.server.emit('newTransaction', newTransaction); // Send new transaction to all clients
-    }, 30000); // Add a new transaction every 5 seconds
+      this.transactions.unshift(newTransaction); // Add the new transaction at the start of the array
+      this.server.emit('newTransaction', newTransaction); // Emit the new transaction to all clients
+    }, 30000); // Create a new transaction every 30 seconds
   }
 }

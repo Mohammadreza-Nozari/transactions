@@ -1,24 +1,112 @@
-# Example Repo for the Blogpost: NestJS Websockets Messages and RxJS Subjects
+Here's a sample README file for your NestJS WebSocket transaction project:
 
-📝 **[Read the full blogpost on the Trilon website](https://trilon.io/blog/nestjs-websockets-with-subjects)**
+* * *
 
----
+NestJS WebSocket Transaction Project
+====================================
 
-<br>
-<p align="center">
-  <a href="https://trilon.io" target="_blank">
-        <img width="500" height="auto" src="https://trilon.io/trilon-logo-clear.png" alt="Trilon.io - Angular Universal, NestJS, JavaScript Application Consulting Development and Training">
-  </a>
-</p>
+This project is a NestJS application that uses WebSockets to simulate and manage transactions in real-time. It broadcasts transaction updates and new transactions to connected clients. Clients can also update the status of existing transactions through WebSocket messages.
 
-<h3 align="center"> Made with :heart: by <a href="https://trilon.io">Trilon.io</a></h3>
+Features
+--------
 
----
+*   **WebSocket Server**: Real-time communication between clients and server.
+*   **Transaction Simulation**: Simulates new transactions every 30 seconds.
+*   **Transaction Updates**: Allows clients to update the status of transactions (Pending/Approved).
+*   **CORS Support**: Allows frontend applications (like React or Vue.js) to connect securely.
 
-## Trilon - Fullstack Consulting | Training | Development
+Prerequisites
+-------------
 
-Official NestJS consulting & support 🐈
+Before you begin, ensure you have met the following requirements:
 
-- Check out **[Trilon.io](https://Trilon.io)** for more info! 
-- Contact us at <hello@trilon.io>, and let's talk about your projects needs.
-- Twitter: [@Trilon_io](http://twitter.com/Trilon_io)
+*   Node.js installed (preferably v14 or higher)
+*   npm or yarn package manager installed
+
+Installation
+------------
+
+1.  Clone this repository:
+    
+    bash
+    
+    CopyEdit
+    
+    `git clone https://github.com/yourusername/nestjs-websocket-transaction.git cd nestjs-websocket-transaction`
+    
+2.  Install dependencies:
+    
+    bash
+    
+    CopyEdit
+    
+    `npm install # or yarn install`
+    
+3.  Set up environment variables if required (e.g., database or API keys). For now, no environment-specific setup is needed.
+    
+
+Running the Application
+-----------------------
+
+1.  To start the NestJS server, run the following command:
+    
+    bash
+    
+    CopyEdit
+    
+    `npm run start # or yarn start`
+    
+2.  The server will start and listen on port 3000 by default.
+    
+3.  Open your browser or WebSocket client and connect to:
+    
+    text
+    
+    CopyEdit
+    
+    `ws://localhost:3000`
+    
+
+WebSocket Events
+----------------
+
+*   **initialTransactions**: Sends the initial list of transactions when a client connects.
+*   **newTransaction**: Sends a new transaction every 30 seconds to all connected clients.
+*   **transactionUpdated**: Sent to all clients when a transaction's status is updated.
+
+### Update Transaction Status
+
+Clients can send the following message to update the status of a transaction:
+
+json
+
+CopyEdit
+
+`{   "id": "transaction-id",   "status": "Pending" // or "Approved" }`
+
+
+
+The project mainly focuses on WebSocket communication. However, if you need to build additional HTTP endpoints, they can be added easily in the `AppController` or other controllers.
+
+Testing
+-------
+
+You can test the WebSocket server using tools like **Postman**, **WebSocket Client**, or create your own frontend app to interact with the WebSocket API.
+
+Contributing
+------------
+
+1.  Fork this repository
+2.  Create a new branch (`git checkout -b feature/your-feature-name`)
+3.  Commit your changes (`git commit -am 'Add new feature'`)
+4.  Push to the branch (`git push origin feature/your-feature-name`)
+5.  Create a new Pull Request
+
+License
+-------
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+* * *
+
+Feel free to customize this README based on additional features or modifications you make to the project!
