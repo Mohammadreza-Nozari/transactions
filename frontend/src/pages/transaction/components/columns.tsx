@@ -9,31 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ITransaction } from "@/interfaces/ITransaction";
 import { socket } from "@/store";
 
 export const columns: ColumnDef<ITransaction>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-  },
   {
     accessorKey: "id",
     header: ({ column }) => {
@@ -72,15 +51,38 @@ export const columns: ColumnDef<ITransaction>[] = [
     accessorKey: "actions",
     header: "Action",
     cell: ({ row }) => {
+      // This function handles the update of the transaction status
       const handleStatusUpdate = (info: any) => {
+        // Extract the original data from the provided 'info' object
         const data = info.original;
+
+        // Check if 'data' is available to avoid errors
         if (data) {
+          // Toggle the status between 'Approved' and 'Pending'
           const newStatus = data.status === "Approved" ? "Pending" : "Approved";
+
+          // Emit an event to update the transaction status via the socket
           socket.emit("updateTransactionStatus", {
-            id: data.id,
-            status: newStatus,
+            id: data.id, // The transaction ID
+            status: newStatus, // The new status ('Approved' or 'Pending')
           });
         }
+      };
+
+      const downloadRow = (info: any) => {
+        const jsonData = info.original;
+        const jsonString = JSON.stringify(jsonData, null, 2); // Convert JSON to string
+        const blob = new Blob([jsonString], { type: "application/json" }); // Create a Blob
+        const url = URL.createObjectURL(blob); // Create a download URL
+
+        // Create an anchor element and simulate a click to trigger the download
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "data.json"; // Filename for the downloaded file
+        a.click();
+
+        // Clean up the URL object
+        URL.revokeObjectURL(url);
       };
 
       return (
@@ -104,9 +106,20 @@ export const columns: ColumnDef<ITransaction>[] = [
                 handleStatusUpdate(row);
               }}
             >
-              Change Status to{" "}
+              Change Status to
               {row.original.status == "Approved" ? "Pending" : "Approved"}
             </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              onClick={() => {
+                downloadRow(row);
+              }}
+            >
+              download
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
           </DropdownMenuContent>
         </DropdownMenu>
       );
