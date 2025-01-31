@@ -23,8 +23,7 @@ const Transactions = () => {
       { title: "Users", link: "/users" },
     ])
   );
-  const { data, isLoading } = useGetUsersQuery({});
-  if (isLoading) {
+  if (transactions.length == 0) {
     return (
       <div className=" flex justify-center pt-10">
         <div className=" w-[250px] ">
@@ -33,7 +32,7 @@ const Transactions = () => {
       </div>
     );
   } else {
-    return <DataTable columns={columns} data={data} />;
+    return <DataTable columns={columns} data={transactions} />;
   }
 };
 

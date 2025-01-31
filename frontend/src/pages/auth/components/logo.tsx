@@ -41,7 +41,9 @@ const Logo: React.FC = () => {
         </div>
       </div>
       <div className=" text-light text-center mt-8 ">
-        <div className=" lg:text-xl ">Shadcn UI + Platzi Api Dashboard</div>
+        <div className=" lg:text-xl ">
+          Shadcn UI + Trasnactions Api Dashboard
+        </div>
         <div className=" lg:text-sm text-xs text-slate-500 mt-4 ">
           -- By Aung Paing Soe --
         </div>

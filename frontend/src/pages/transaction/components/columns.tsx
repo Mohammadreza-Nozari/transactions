@@ -1,4 +1,3 @@
-import { CategoryType } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,9 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ITransaction } from "@/interfaces/ITransaction";
 
-export const columns: ColumnDef<CategoryType>[] = [
+export const columns: ColumnDef<ITransaction>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -42,35 +41,27 @@ export const columns: ColumnDef<CategoryType>[] = [
           className=" flex items-center "
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          ID
+          Refrence number
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </div>
       );
     },
   },
   {
-    accessorKey: "avatar",
-    header: "Avatar",
-    cell: ({ row }) => {
-      return (
-        <Avatar>
-          <AvatarImage src={ row.getValue("avatar") } alt="@shadcn" />
-          <AvatarFallback>{ (row.getValue("name") as any).slice(0,2) }</AvatarFallback>
-        </Avatar>
-      );
-    },
+    accessorKey: "to",
+    header: "To",
   },
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "amount",
+    header: "Amount",
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "currency",
+    header: "Currency",
   },
   {
-    accessorKey: "role",
-    header: "Role",
+    accessorKey: "status",
+    header: "Status",
   },
   {
     accessorKey: "actions",

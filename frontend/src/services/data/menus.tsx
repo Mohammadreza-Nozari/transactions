@@ -10,7 +10,8 @@ import {
   // Shield,
   Settings2,
   Category2,
-  Package
+  Package,
+  ZoomMoney,
 } from "tabler-icons-react";
 
 interface MenuItem {
@@ -62,28 +63,16 @@ const menus: MenuItem[] = [
     ],
     isOpen: false,
   },
-  // {
-  //   icon: <Shield size={18} strokeWidth={2} />,
-  //   title: "Auth Pages",
-  //   link: "/users",
-  //   children: [
-  //     {
-  //       title: "Sign In",
-  //       link: "/auth/sign-in",
-  //       icon: <Login size={18} strokeWidth={2} />,
-  //     },
-  //     {
-  //       title: "Sign Up",
-  //       link: "/auth/sign-up",
-  //       icon: <UserPlus size={18} strokeWidth={2} />,
-  //     },
-  //   ],
-  //   isOpen: false,
-  // },
   {
     icon: <Users size={18} strokeWidth={2} />,
     title: "Users",
     link: "/users",
+    isOpen: false,
+  },
+  {
+    icon: <ZoomMoney size={18} strokeWidth={2} />,
+    title: "Transactions",
+    link: "/transactions",
     isOpen: false,
   },
   {

@@ -42,7 +42,7 @@ const MobileLogo : React.FC = () => {
       </div>
     </div>
     <div className=" text-dark text-center mt-8 ">
-      <div >Shadcn UI + Platzi Api Dashboard</div>
+      <div >Shadcn UI + Nozari Api Dashboard</div>
       <div className=" text-xs text-slate-500 mt-4 ">
         -- By Aung Paing Soe --
       </div>
