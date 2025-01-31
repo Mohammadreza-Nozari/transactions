@@ -10,6 +10,7 @@ import {
 } from '@nestjs/websockets';
 import { ITransaction } from 'interfaces/ITransaction';
 import { Server, Socket } from 'socket.io';
+import { faker } from '@faker-js/faker';
 
 @WebSocketGateway({
   cors: {
@@ -25,9 +26,30 @@ export class WebsocketsGateway
 
   constructor() {}
 
+  getRandomDate(start = new Date(2000, 0, 1), end = new Date()) {
+    const randomDate = new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime()),
+    );
+    return randomDate.toISOString().split('T')[0]; // Extracts YYYY-MM-DD
+  }
+
   private transactions: ITransaction[] = [
-    { id: 1, to: 'Alice', amount: 100, currency: 'USD', status: 'Pending' },
-    { id: 2, to: 'Bob', amount: 250, currency: 'EUR', status: 'Approved' },
+    {
+      id: faker.string.uuid(),
+      to: faker.person.fullName(),
+      amount: 100,
+      currency: 'USD',
+      status: 'Pending',
+      date: this.getRandomDate(),
+    },
+    {
+      id: faker.string.uuid(),
+      to: faker.person.fullName(),
+      amount: 250,
+      currency: 'EUR',
+      status: 'Approved',
+      date: this.getRandomDate(),
+    },
   ];
 
   afterInit(server: Server) {
@@ -46,7 +68,7 @@ export class WebsocketsGateway
 
   @SubscribeMessage('updateTransactionStatus')
   handleUpdateStatus(
-    @MessageBody() data: { id: number; status: 'Pending' | 'Approved' },
+    @MessageBody() data: { id: string; status: 'Pending' | 'Approved' },
   ) {
     const transaction = this.transactions.find((t) => t.id === data.id);
     if (transaction) {
@@ -59,14 +81,15 @@ export class WebsocketsGateway
     let idCounter = this.transactions.length + 1;
     setInterval(() => {
       const newTransaction: ITransaction = {
-        id: idCounter++,
-        to: `User${idCounter}`,
+        id: faker.string.uuid(),
+        to: faker.person.fullName(),
         amount: Math.floor(Math.random() * 500),
         currency: ['USD', 'EUR', 'GBP'][Math.floor(Math.random() * 3)],
         status: 'Pending',
+        date: this.getRandomDate(),
       };
 
-      this.transactions.push(newTransaction);
+      this.transactions.unshift(newTransaction);
       this.server.emit('newTransaction', newTransaction); // Send new transaction to all clients
     }, 30000); // Add a new transaction every 5 seconds
   }

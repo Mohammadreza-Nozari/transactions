@@ -57,11 +57,9 @@ const SheetSideBar: React.FC = () => {
           <div className="border-b dark:border-foreground dark:text-light py-5 w-full top-0 sticky shadow-sm ">
             <div className="px-4 flex items-center gap-2 lg:text-lg">
               <SiPlatzi className=" lg:text-xl " />
-              Platzi + Shadcn Panel
+              Nozari + Shadcn Panel
             </div>
-            <div className=" text-sm px-[44px] ">
-              By Aung Paing Soe
-            </div>
+            <div className=" text-sm px-[44px] ">Mohammadreza Nozari</div>
           </div>
 
           <div className="flex flex-col dark:text-light">

@@ -45,7 +45,7 @@ const Logo: React.FC = () => {
           Shadcn UI + Trasnactions Api Dashboard
         </div>
         <div className=" lg:text-sm text-xs text-slate-500 mt-4 ">
-          -- By Aung Paing Soe --
+          -- Mohammadreza Nozari --
         </div>
       </div>
     </div>

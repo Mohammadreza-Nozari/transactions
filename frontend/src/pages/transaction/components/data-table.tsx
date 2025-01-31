@@ -26,7 +26,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useEffect } from "react";
+import { selectSelectedCurrency } from "@/store/slice/transaction/transactionSlice";
+import { useSelector } from "react-redux";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -37,6 +39,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const selectedCurrency = useSelector(selectSelectedCurrency);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -63,15 +66,23 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  useEffect(() => {
+    if (selectedCurrency) {
+      table
+        .getColumn("currency")
+        ?.setFilterValue(
+          (selectedCurrency as string) == "All" ? "" : selectedCurrency
+        );
+    }
+  }, [selectedCurrency]);
+
   return (
     <>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter name..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          placeholder="Filter all columns..."
+          value={table.getState().globalFilter ?? ""}
+          onChange={(event) => table.setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
         <DropdownMenu>
@@ -105,7 +116,10 @@ export function DataTable<TData, TValue>({
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className=" dark:border-foreground ">
+              <TableRow
+                key={headerGroup.id}
+                className=" dark:border-foreground "
+              >
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>

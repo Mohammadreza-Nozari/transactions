@@ -1,7 +1,8 @@
 export interface ITransaction {
-  id: number;
+  id: string;
   to: string;
   amount: number;
+  date: string;
   currency: string;
-  status: 'Pending' | 'Approved';
+  status: "Pending" | "Approved";
 }

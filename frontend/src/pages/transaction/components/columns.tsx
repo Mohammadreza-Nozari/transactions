@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ITransaction } from "@/interfaces/ITransaction";
+import { socket } from "@/store";
 
 export const columns: ColumnDef<ITransaction>[] = [
   {
@@ -52,6 +53,10 @@ export const columns: ColumnDef<ITransaction>[] = [
     header: "To",
   },
   {
+    accessorKey: "date",
+    header: "Date",
+  },
+  {
     accessorKey: "amount",
     header: "Amount",
   },
@@ -67,6 +72,17 @@ export const columns: ColumnDef<ITransaction>[] = [
     accessorKey: "actions",
     header: "Action",
     cell: ({ row }) => {
+      const handleStatusUpdate = (info: any) => {
+        const data = info.original;
+        if (data) {
+          const newStatus = data.status === "Approved" ? "Pending" : "Approved";
+          socket.emit("updateTransactionStatus", {
+            id: data.id,
+            status: newStatus,
+          });
+        }
+      };
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -83,7 +99,14 @@ export const columns: ColumnDef<ITransaction>[] = [
               Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View Detail</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                handleStatusUpdate(row);
+              }}
+            >
+              Change Status to{" "}
+              {row.original.status == "Approved" ? "Pending" : "Approved"}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
